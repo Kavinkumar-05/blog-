@@ -15,6 +15,11 @@ from functools import wraps
 from flask import abort
 from flask_gravatar import Gravatar
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 ckeditor = CKEditor(app)
@@ -50,9 +55,17 @@ def admin_only(f):
 # CREATE DATABASE
 class Base(DeclarativeBase):
     pass
+
+
+
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
-db = SQLAlchemy(model_class=Base)
+
+db = SQLAlchemy()
 db.init_app(app)
+
+
+
 
 @login_manager.user_loader
 def load_user(user_id):
